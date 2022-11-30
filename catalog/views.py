@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from .models import Book, Author, BookInstance, Genre
 from random import randint
 from django.views import generic
@@ -72,7 +72,10 @@ def all_authors(request):
 
 def get_single_page(request, book_id):
 
-    book = Book.objects.get(id=book_id)
+    try:
+        book = Book.objects.get(id=book_id)
+    except Book.DoesNotExist:
+        raise Http404("Такой книги не существует")
 
 
     return render(
@@ -83,8 +86,10 @@ def get_single_page(request, book_id):
 
 def get_all_author_books(request, author_id):
 
-
-    books = Book.objects.filter(author_id=author_id)
+    try:
+        books = Book.objects.filter(author_id=author_id)
+    except Book.DoesNotExist:
+        raise Http404("Такого автора нету")
 
     return render(
         request,
