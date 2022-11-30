@@ -74,6 +74,7 @@ def get_single_page(request, book_id):
 
     book = Book.objects.get(id=book_id)
 
+
     return render(
         request,
         'catalog/book_page.html',
