@@ -4,7 +4,9 @@
 
                 <div class="card mb-3">
                     <div class="card-header">
-                        Категория: <a href="#"> {{ book.genre.name }}</a>
+                        Категория: {% for genre in book.genre.all %}
+                        <a href=""> {{ genre }} </a>
+                        {% endfor %}
                     </div>
                     <div class="card-body">
                         <div class="media">
@@ -14,7 +16,7 @@
                                 <img src="https://api.lorem.space/image/house?w=350&h=150" alt="image">
                             {% endif %}
                             <div class="media-body">
-                                <h1 class="card-author"> {{ book.author.first_name }} {{ book.author.last_name }}</h1>
+                                <a href=" {% url 'author_books' book.author.id %}"><h1 class="card-author"> {{ book.author.first_name }} {{ book.author.last_name }}</h1></a>
                                 <h3 class="card-title">{{ book.title }} ({{ book.year_of_writing }})</h3>
 
                                 <p class="card-text">{{ book.summary }}</p>
