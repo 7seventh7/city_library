@@ -1,0 +1,18 @@
+.sidebar-nav {
+    margin-top: 20px;
+    padding: 0;
+    list-style: none;
+}
+
+.container-fluid {
+    background-color: lightslategrey;
+}
+
+.carousel-inner img {
+  width: 350px;
+  height: 600px;
+}
+
+.list-group-item-action {
+    background-color: steelblue;
+}

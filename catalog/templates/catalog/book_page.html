@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+                <div class="card mb-3">
+                    <div class="card-header">
+                        Категория: <a href="#"> Категория</a>
+                    </div>
+                    <div class="card-body">
+                        <div class="media">
+                            {% if book.photo %}
+                                <img src="{{ book.photo.url }}" alt="image" width="200" height="350">
+                            {% else %}
+                                <img src="https://api.lorem.space/image/house?w=350&h=150" alt="image">
+                            {% endif %}
+                            <div class="media-body">
+                                <h1 class="card-author"> {{ book.author.first_name }} {{ book.author.last_name }}</h1>
+                                <h3 class="card-title">{{ book.title }} ({{ book.year_of_writing }})</h3>
+
+                                <p class="card-text">{{ book.summary }}</p>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer text-muted">
+                        {{ book.year_of_writing }}
+                    </div>
+                </div>
+
+{% endblock %}

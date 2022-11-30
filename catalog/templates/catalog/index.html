@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Главная страница городской библиотеки</h1>
+
+    <p>Добро пожаловать на наш сайт. Здесь вы сможете найти нужную книгу и узнать доступна ли она сейчас. </p>
+
+    <h2>Общие данные</h2>
+
+    <p>В библиотеке зарегистрированны:</p>
+    <ul>
+        <li><strong>Книг:</strong> {{ num_books }}</li>
+        <li><strong>Копий:</strong> {{ num_instances }}</li>
+        <li><strong>Копий доступных:</strong> {{ num_instances_available }}</li>
+        <li><strong>Авторов:</strong> {{ num_authors }}</li>
+        <li><strong>Ваше количество посещений сайта:</strong> {{ num_visits }}</li>
+    </ul>
+
+{% endblock %}
+
+{% block random_book %}
+    <div class="col-sm-5">
+        <div class="card" style="width: 18rem;">
+            <div class="card-header"><h3>Случайная книга</h3></div>
+            {% if random_object.photo %}
+
+                    <img src="{{ random_object.photo.url }}" class="card-img-top" alt="image" width="200" height="350">
+
+            {% endif %}
+            <div class="card-body">
+                <h5 class="card-title">{{ random_object.author }}</h5>
+                <p class="card-text">{{ random_object.title }}</p>
+                <a href="{% url 'book_detail' random_object.pk %}" class="btn btn-primary">Подробнее...</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block latest_book %}
+    <div class="col-sm-5">
+        <div class="card" style="width: 18rem;">
+            <div class="card-header"><h3>Последняя добавленная книга</h3></div>
+            {% if latest_object.photo %}
+                <img src="{{ latest_object.photo.url }}" class="card-img-top" alt="image" width="200" height="350">
+            {% endif %}
+            <div class="card-body">
+                <h5 class="card-title">{{ latest_object.author }}</h5>
+                <p class="card-text">{{ latest_object.title }}</p>
+                <a href="{% url 'book_detail' latest_object.pk %}" class="btn btn-primary">Подробнее...</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
