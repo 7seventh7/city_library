@@ -11,3 +11,7 @@ urlpatterns = [
     path('authors', all_authors, name = "all_authors_list" ),
     path('author_books/<int:author_id>/', get_all_author_books, name = "author_books" ),
 ]
+
+urlpatterns += [
+    path('accounts/', include('django.contrib.auth.urls')),
+]
