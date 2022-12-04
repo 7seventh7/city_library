@@ -1,5 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse, Http404
+
+from .forms import *
 from .models import Book, Author, BookInstance, Genre
 from random import randint
 from django.views import generic
@@ -95,6 +97,28 @@ def get_all_author_books(request, author_id):
         request,
         'catalog/books_of_single_author.html',
         context={'books': books,},
+    )
+
+def add_book(request):
+    form = AddBookForm()
+    return render(
+        request,
+        'catalog/add_book.html',
+        context={'title': 'Добавление статьи' , 'form': form},
+    )
+
+def contact_form(request):
+    # if request.method == 'POST':
+    #     form = ContactForm(request.POST)
+    #     if form.is_valid():
+    #         print(form.cleaned_data)
+    #     else:
+    #         form = ContactForm()
+    form = ContactForm()
+    return render(
+        request,
+        'catalog/contact_form.html',
+        context={'title': 'Добавление статьи' , 'form': form},
     )
 
 
