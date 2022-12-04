@@ -78,13 +78,14 @@ def get_single_page(request, book_id):
 def get_all_author_books(request, author_id):
     try:
         books = Book.objects.filter(author_id=author_id)
+        author = Author.objects.get(pk = author_id)
     except Book.DoesNotExist:
         raise Http404("Такого автора нету")
 
     return render(
         request,
         'catalog/books_of_single_author.html',
-        context={'books': books, },
+        context={'books': books, 'author': author},
     )
 
 
@@ -126,8 +127,14 @@ class BookListView(ListView):
     context_object_name = 'books_title'
 
 
+class AuthorListView(ListView):
+    model = Author
+    template_name = 'catalog/authors_list.html'
+    context_object_name = 'authors'
+
+
+
+
 class BookDetailView(generic.DetailView):
     model = Book
 
-# class AutorListView(generic.ListView):
-#     model = Author
