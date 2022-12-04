@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, Http404
+from django.views.generic import ListView
+
 from .forms import *
 from .models import Book, Author, BookInstance, Genre
 from random import randint
@@ -38,19 +40,17 @@ def index(request):
     )
 
 
-def all_books_list(request):
-    """
-    Функция отображения всех существующих книг в библиотеке
-    :param request:
-    :return:
-    """
-    books_title = Book.objects.all()
-
-    return render(
-        request,
-        'catalog/all_books_list.html',
-        context={'books_title': books_title, },
-    )
+# def all_books_list(request):
+#     """
+#     Функция отображения всех существующих книг в библиотеке
+#     """
+#     books_title = Book.objects.all()
+#
+#     return render(
+#         request,
+#         'catalog/all_books_list.html',
+#         context={'books_title': books_title, },
+#     )
 
 
 def all_authors(request):
@@ -120,8 +120,10 @@ def contact_form(request):
     )
 
 
-class BookListView(generic.ListView):
+class BookListView(ListView):
     model = Book
+    template_name = 'catalog/all_books_list.html'
+    context_object_name = 'books_title'
 
 
 class BookDetailView(generic.DetailView):
