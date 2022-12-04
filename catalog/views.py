@@ -1,18 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse, Http404
-
 from .forms import *
 from .models import Book, Author, BookInstance, Genre
 from random import randint
 from django.views import generic
-
-# def index(request):
-#
-#     return HttpResponse(print(request.headers))
-
-
 from .models import Book, Author, BookInstance, Genre
-
 
 def index(request):
     """
@@ -54,16 +46,14 @@ def all_books_list(request):
     """
     books_title = Book.objects.all()
 
-
-
     return render(
         request,
         'catalog/all_books_list.html',
-        context={'books_title': books_title,},
+        context={'books_title': books_title, },
     )
 
-def all_authors(request):
 
+def all_authors(request):
     authors = Author.objects.all()
 
     return render(
@@ -72,13 +62,12 @@ def all_authors(request):
         context={'authors': authors, },
     )
 
-def get_single_page(request, book_id):
 
+def get_single_page(request, book_id):
     try:
         book = Book.objects.get(id=book_id)
     except Book.DoesNotExist:
         raise Http404("Такой книги не существует")
-
 
     return render(
         request,
@@ -87,7 +76,6 @@ def get_single_page(request, book_id):
     )
 
 def get_all_author_books(request, author_id):
-
     try:
         books = Book.objects.filter(author_id=author_id)
     except Book.DoesNotExist:
@@ -96,16 +84,26 @@ def get_all_author_books(request, author_id):
     return render(
         request,
         'catalog/books_of_single_author.html',
-        context={'books': books,},
+        context={'books': books, },
     )
 
-def add_book(request):
-    form = AddBookForm()
+
+def add_book(
+        request):  # Разобраться с багом!!! В форме нужно сразу мочь добавлять нового автора, а не выбирать из списка существующих
+    # form = AddBookForm()
+    if request.method == 'POST':
+        form = AddBookForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('index')  # перенаправляемся на главную страницу если форма заполненна корректно
+    else:
+        form = AddBookForm()
     return render(
         request,
         'catalog/add_book.html',
-        context={'title': 'Добавление статьи' , 'form': form},
+        context={'title': 'Добавление статьи', 'form': form},
     )
+
 
 def contact_form(request):
     # if request.method == 'POST':
@@ -118,9 +116,8 @@ def contact_form(request):
     return render(
         request,
         'catalog/contact_form.html',
-        context={'title': 'Добавление статьи' , 'form': form},
+        context={'title': 'Форма для связи', 'form': form},
     )
-
 
 
 class BookListView(generic.ListView):
