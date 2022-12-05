@@ -1,5 +1,8 @@
+from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render
 from django.http import HttpResponse, Http404
+from django.urls import reverse_lazy
+from django.views.generic import CreateView
 
 from .forms import *
 from .models import Book, Author, BookInstance, Genre
@@ -132,3 +135,20 @@ class BookDetailView(generic.DetailView):
 
 # class AutorListView(generic.ListView):
 #     model = Author
+
+def login2(request):
+    data = request.META.get("HTTP_REFERER")
+    return render(request,
+            "catalog/login2.html", {"data": data,})
+
+# def registration2(request):
+#     data = request.__dict__
+#     return render(request,
+#             "catalog/registration.html", {"data": data,})
+
+
+
+class RegisterUser(CreateView):
+    form_class = UserCreationForm
+    template_name = 'catalog/registration.html'
+    success_url = reverse_lazy('login2')
