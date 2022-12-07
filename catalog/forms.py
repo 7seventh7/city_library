@@ -10,6 +10,10 @@ class AddBookForm(forms.ModelForm):
     class Meta:
         model = Book
         fields = "__all__"
+        widgets = {
+            'title': forms.TextInput(attrs={'class': 'form-input'}),
+            'summary': forms.Textarea(attrs={'cols': 60, 'rows':10})
+        }
 
 class ContactForm(forms.Form):
 

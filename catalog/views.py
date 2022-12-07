@@ -1,3 +1,4 @@
+
 from django.contrib.auth import logout
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.views import LoginView
@@ -6,11 +7,11 @@ from django.http import HttpResponse, Http404
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
 
+
 from .forms import *
 from .models import Book, Author, BookInstance, Genre
 from random import randint
 from django.views import generic
-
 
 from .models import Book, Author, BookInstance, Genre
 
@@ -46,24 +47,20 @@ def index(request):
     )
 
 
-def all_books_list(request):
-    """
-    Функция отображения всех существующих книг в библиотеке
-    :param request:
-    :return:
-    """
-    books_title = Book.objects.all()
+# def all_books_list(request):
+#     """
+#     Функция отображения всех существующих книг в библиотеке
+#     """
+#     books_title = Book.objects.all()
+#
+#     return render(
+#         request,
+#         'catalog/all_books_list.html',
+#         context={'books_title': books_title, },
+#     )
 
-
-
-    return render(
-        request,
-        'catalog/all_books_list.html',
-        context={'books_title': books_title,},
-    )
 
 def all_authors(request):
-
     authors = Author.objects.all()
 
     return render(
@@ -72,13 +69,12 @@ def all_authors(request):
         context={'authors': authors, },
     )
 
-def get_single_page(request, book_id):
 
+def get_single_page(request, book_id):
     try:
         book = Book.objects.get(id=book_id)
     except Book.DoesNotExist:
         raise Http404("Такой книги не существует!")
-
 
     return render(
         request,
@@ -87,24 +83,33 @@ def get_single_page(request, book_id):
     )
 
 def get_all_author_books(request, author_id):
-
     try:
         books = Book.objects.filter(author_id=author_id)
+        author = Author.objects.get(pk = author_id)
     except Book.DoesNotExist:
         raise Http404("Такого автора нету")
 
     return render(
         request,
         'catalog/books_of_single_author.html',
-        context={'books': books,},
+        context={'books': books, 'author': author},
     )
 
-def add_book(request):
-    form = AddBookForm()
+
+def add_book(
+        request):  # Разобраться с багом!!! В форме нужно сразу мочь добавлять нового автора, а не выбирать из списка существующих
+    # form = AddBookForm()
+    if request.method == 'POST':
+        form = AddBookForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('index')  # перенаправляемся на главную страницу если форма заполненна корректно
+    else:
+        form = AddBookForm()
     return render(
         request,
         'catalog/add_book.html',
-        context={'title': 'Добавление статьи' , 'form': form},
+        context={'title': 'Добавление статьи', 'form': form},
     )
 
 
@@ -131,16 +136,29 @@ def contact_form(request):
     return render(
         request,
         'catalog/contact_form.html',
+
         context={'title': 'Добавление статьи', 'form': form},
     )
 
 
 class BookListView(generic.ListView):
+
     model = Book
+    template_name = 'catalog/all_books_list.html'
+    context_object_name = 'books_title'
+
+
+class AuthorListView(ListView):
+    model = Author
+    template_name = 'catalog/authors_list.html'
+    context_object_name = 'authors'
+
+
 
 
 class BookDetailView(generic.DetailView):
     model = Book
+
 
 # class AutorListView(generic.ListView):
 #     model = Author
@@ -172,3 +190,4 @@ class LoginUser(LoginView):
 def logout_user(request):
     logout(request)
     return redirect('login2')
+

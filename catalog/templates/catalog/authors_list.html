@@ -1,19 +1,15 @@
 {% extends "base.html" %}
 
 {% block content %}
+
     <h1>Список Авторов</h1>
 
-    {% if authors %}
-    <ul>
+    <div class="list-group">
 
-      {% for author in authors %}
-      <li>
-        <a href="{% url 'author_books' author.pk %}">{{author.first_name}} {{author.last_name}}</a>
-      </li>
-      {% endfor %}
+        {% for author in authors %}
+            <a href="{% url 'author_books' author.pk %}" class="list-group-item list-group-item-action">{{author.first_name}} {{author.last_name}}</a>
+        {% endfor %}
 
-    </ul>
-    {% else %}
-      <p>В библиотеке нет загруженных авторов</p>
-    {% endif %}
+    </div>
+
 {% endblock %}
