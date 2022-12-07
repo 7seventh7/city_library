@@ -11,13 +11,8 @@ from .models import Book, Author, BookInstance, Genre
 from random import randint
 from django.views import generic
 
-# def index(request):
-#
-#     return HttpResponse(print(request.headers))
-
 
 from .models import Book, Author, BookInstance, Genre
-
 
 def index(request):
     """
