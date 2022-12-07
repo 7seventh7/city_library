@@ -17,7 +17,7 @@ class ContactForm(forms.Form):
     last_name = forms.CharField(max_length=255, label='Вашa фамилия')
     email = forms.EmailField(max_length=255, label='Электронный адрес')
     content = forms.CharField(widget=forms.Textarea(attrs={'cols':60, 'rows':10}))
-    captcha = CaptchaField()q
+    captcha = CaptchaField()
 
 class LoginUserForm(AuthenticationForm):
 
