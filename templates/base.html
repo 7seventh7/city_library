@@ -33,6 +33,13 @@
                     {% else %}
                         <li><a href="{% url 'login' %}?next={{ request.path }}">Login</a></li>
                     {% endif %}
+                    <li></li>
+                    {% if request.user.is_authenticated %}
+                        <li>User: {{ user.get_username }}</li>
+                        <li><a href="{% url 'logout2' %}">Выход2</a></li>
+                    {% else %}
+                        <li><a href="{% url 'login2' %}">Вход2 |</a> <a href="{% url 'registration' %}">Регистрация2</a> </li>
+                    {% endif %}
                 </ul>
             {% endblock %}
         </div>

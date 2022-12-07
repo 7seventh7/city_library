@@ -12,6 +12,10 @@ urlpatterns = [
     path('author_books/<int:author_id>/', get_all_author_books, name="author_books"),
     path('add_book', add_book, name="add_book"),
     path('contact_form', contact_form, name="contact_form"),
+    path('login2', LoginUser.as_view(), name="login2"),
+    path('logout2', logout_user, name="logout2"),
+    path('registration', RegisterUser.as_view(), name="registration"),
+
 ]
 
 urlpatterns += [

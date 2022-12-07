@@ -4,12 +4,10 @@
 
 <h1>{{ title }}</h1>
 
-<div class = "form-error"> {{ form.non_field_errors }}</div>
-
 <form method="post">
     {% csrf_token%}
     {{ form.as_p}}
-    <button type="submit">Отправить</button>
+    <button href="/" type="submit">Войти</button>
 
 </form>
 

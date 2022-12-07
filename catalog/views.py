@@ -1,11 +1,18 @@
+
+from django.contrib.auth import logout
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.views import LoginView
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, Http404
-from django.views.generic import ListView
+from django.urls import reverse_lazy
+from django.views.generic import CreateView
+
 
 from .forms import *
 from .models import Book, Author, BookInstance, Genre
 from random import randint
 from django.views import generic
+
 from .models import Book, Author, BookInstance, Genre
 
 def index(request):
@@ -17,7 +24,7 @@ def index(request):
     num_instances = BookInstance.objects.all().count()
     # Доступные книги (статус = 'a')
     num_instances_available = BookInstance.objects.filter(status__exact='a').count()
-    num_authors = Author.objects.count()  # Метод 'all()' применён по умолчанию.
+    num_authors = Author.objects.count()
 
     latest_object = Book.objects.all().reverse()[0]
     count = Book.objects.count()
@@ -67,7 +74,7 @@ def get_single_page(request, book_id):
     try:
         book = Book.objects.get(id=book_id)
     except Book.DoesNotExist:
-        raise Http404("Такой книги не существует")
+        raise Http404("Такой книги не существует!")
 
     return render(
         request,
@@ -107,21 +114,35 @@ def add_book(
 
 
 def contact_form(request):
-    # if request.method == 'POST':
-    #     form = ContactForm(request.POST)
-    #     if form.is_valid():
-    #         print(form.cleaned_data)
-    #     else:
-    #         form = ContactForm()
-    form = ContactForm()
+    if request.method == 'GET':
+        form = ContactForm()
+        # The request method 'POST' indicates
+    # that the form was submitted
+    if request.method == 'POST':  # 1
+        # We are creating a form instanse to save the form data
+        form = ContactForm(request.POST)  # 2
+        # Validate the form
+        if form.is_valid():
+            # if the submitted data is valid
+            # the perform the following operations
+
+            # name = form.cleaned_data['name'],
+            # email = form.cleaned_data['email'],
+            # message = form.cleaned_data['message']
+            # form.save()
+            # When the operation is successful, it redirects to another web page.
+            return redirect('index')
+
     return render(
         request,
         'catalog/contact_form.html',
-        context={'title': 'Форма для связи', 'form': form},
+
+        context={'title': 'Добавление статьи', 'form': form},
     )
 
 
-class BookListView(ListView):
+class BookListView(generic.ListView):
+
     model = Book
     template_name = 'catalog/all_books_list.html'
     context_object_name = 'books_title'
@@ -137,4 +158,36 @@ class AuthorListView(ListView):
 
 class BookDetailView(generic.DetailView):
     model = Book
+
+
+# class AutorListView(generic.ListView):
+#     model = Author
+
+def login2(request):
+    data = request.META.get("HTTP_REFERER")
+    return render(request,
+            "catalog/login2.html", {"data": data,})
+
+# def registration2(request):
+#     data = request.__dict__
+#     return render(request,
+#             "catalog/registration.html", {"data": data,})
+
+
+
+class RegisterUser(CreateView):
+    form_class = UserCreationForm
+    template_name = 'catalog/registration.html'
+    success_url = reverse_lazy('login2')
+
+class LoginUser(LoginView):
+    form_class = LoginUserForm
+    template_name = 'catalog/login2.html'
+
+    def get_success_url(self):
+        return reverse_lazy('index')
+
+def logout_user(request):
+    logout(request)
+    return redirect('login2')
 
