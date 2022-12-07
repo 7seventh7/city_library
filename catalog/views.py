@@ -23,7 +23,7 @@ def index(request):
     num_instances = BookInstance.objects.all().count()
     # Доступные книги (статус = 'a')
     num_instances_available = BookInstance.objects.filter(status__exact='a').count()
-    num_authors = Author.objects.count()  # Метод 'all()' применён по умолчанию.
+    num_authors = Author.objects.count()
 
     latest_object = Book.objects.all().reverse()[0]
     count = Book.objects.count()
@@ -77,7 +77,7 @@ def get_single_page(request, book_id):
     try:
         book = Book.objects.get(id=book_id)
     except Book.DoesNotExist:
-        raise Http404("Такой книги не существует")
+        raise Http404("Такой книги не существует!")
 
 
     return render(
