@@ -112,22 +112,6 @@ def add_book(request):
         context={'title': 'Добавление статьи' , 'form': form},
     )
 
-# def contact_form(request):
-#     # if request.method == 'POST':
-#     #     form = ContactForm(request.POST)
-#     #     if form.is_valid():
-#     #         print(form.cleaned_data)
-#     #     else:
-#     #         form = ContactForm()
-#
-#     form = ContactForm()
-#
-#     return render(
-#         request,
-#         'catalog/contact_form.html',
-#         context={'title': 'Добавление статьи' , 'form': form},
-#     )
-
 
 def contact_form(request):
     if request.method == 'GET':
