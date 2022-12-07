@@ -112,20 +112,48 @@ def add_book(request):
         context={'title': 'Добавление статьи' , 'form': form},
     )
 
+# def contact_form(request):
+#     # if request.method == 'POST':
+#     #     form = ContactForm(request.POST)
+#     #     if form.is_valid():
+#     #         print(form.cleaned_data)
+#     #     else:
+#     #         form = ContactForm()
+#
+#     form = ContactForm()
+#
+#     return render(
+#         request,
+#         'catalog/contact_form.html',
+#         context={'title': 'Добавление статьи' , 'form': form},
+#     )
+
+
 def contact_form(request):
-    # if request.method == 'POST':
-    #     form = ContactForm(request.POST)
-    #     if form.is_valid():
-    #         print(form.cleaned_data)
-    #     else:
-    #         form = ContactForm()
-    form = ContactForm()
+    if request.method == 'GET':
+        form = ContactForm()
+        # The request method 'POST' indicates
+    # that the form was submitted
+    if request.method == 'POST':  # 1
+        # We are creating a form instanse to save the form data
+        form = ContactForm(request.POST)  # 2
+        # Validate the form
+        if form.is_valid():
+            # if the submitted data is valid
+            # the perform the following operations
+
+            # name = form.cleaned_data['name'],
+            # email = form.cleaned_data['email'],
+            # message = form.cleaned_data['message']
+            # form.save()
+            # When the operation is successful, it redirects to another web page.
+            return redirect('index')
+
     return render(
         request,
         'catalog/contact_form.html',
-        context={'title': 'Добавление статьи' , 'form': form},
+        context={'title': 'Добавление статьи', 'form': form},
     )
-
 
 
 class BookListView(generic.ListView):

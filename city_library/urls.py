@@ -20,7 +20,8 @@ from city_library import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('catalog.urls'))
+    path('', include('catalog.urls')),
+    path('captcha/', include('captcha.urls')),
 ]
 
 if settings.DEBUG:

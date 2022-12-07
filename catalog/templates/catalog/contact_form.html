@@ -4,10 +4,12 @@
 
 <h1>{{ title }}</h1>
 
-<form action="{% url 'add_book' %}" method="post">
+<div class = "form-error"> {{ form.non_field_errors }}</div>
+
+<form method="post">
     {% csrf_token%}
     {{ form.as_p}}
-    <button href="{% url 'index' %}" type="submit">Отправить</button>
+    <button type="submit">Отправить</button>
 
 </form>
 
